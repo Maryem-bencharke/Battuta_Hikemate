@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Button, StyleSheet, Alert, Text } from 'react-native';
+import { View, Button, StyleSheet, Alert } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import MapViewDirections from 'react-native-maps-directions';
@@ -10,11 +10,11 @@ const ChooseLocation = ({ navigation }) => {
   const [route, setRoute] = useState([]);
   const [isTracking, setIsTracking] = useState(false);
   const mapRef = useRef(null);
-  const GOOGLE_MAP_KEY = 'AIzaSyCPqK2X4gXqrqJb_1H3Xg_VB_8gQp2sZoc'; // Use your actual Google Maps API key
+  const GOOGLE_MAP_KEY = 'AIzaSyCPqK2X4gXqrqJb_1H3Xg_VB_8gQp2sZoc';
 
   useEffect(() => {
     if (!isTracking) return;
-    
+
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -23,13 +23,14 @@ const ChooseLocation = ({ navigation }) => {
         return;
       }
 
-      const subscription = Location.watchPositionAsync({
+      const subscription = await Location.watchPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
-        distanceInterval: 5,  // Update every 5 meters
+        distanceInterval: 5,
       }, (location) => {
-        const { latitude, longitude } = location.coords;
-        setCurrentLocation({ latitude, longitude });
-        setRoute(prevRoute => [...prevRoute, { latitude, longitude }]);
+        console.log('New location:', location);
+        const { latitude, longitude, altitude } = location.coords;
+        setCurrentLocation({ latitude, longitude, altitude });
+        setRoute(prevRoute => [...prevRoute, { latitude, longitude, altitude }]);
       });
 
       return () => subscription.remove();
@@ -60,6 +61,7 @@ const ChooseLocation = ({ navigation }) => {
       Alert.alert('Error', 'Please select both your current location and a destination.');
       return;
     }
+    console.log('Navigating to NextScreen with:', { location: currentLocation, destination, route });
     navigation.navigate('NextScreen', { location: currentLocation, destination, route });
   };
 
@@ -82,7 +84,7 @@ const ChooseLocation = ({ navigation }) => {
         {route.length > 1 && (
           <Polyline
             coordinates={route}
-            strokeColor="#000" // black
+            strokeColor="#000"
             strokeWidth={3}
           />
         )}
@@ -119,3 +121,5 @@ const styles = StyleSheet.create({
 });
 
 export default ChooseLocation;
+
+
