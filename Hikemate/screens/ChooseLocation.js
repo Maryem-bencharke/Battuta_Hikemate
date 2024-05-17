@@ -27,7 +27,6 @@ const ChooseLocation = ({ navigation }) => {
         accuracy: Location.Accuracy.BestForNavigation,
         distanceInterval: 5,
       }, (location) => {
-        console.log('New location:', location);
         const { latitude, longitude, altitude } = location.coords;
         setCurrentLocation({ latitude, longitude, altitude });
         setRoute(prevRoute => [...prevRoute, { latitude, longitude, altitude }]);
@@ -61,7 +60,6 @@ const ChooseLocation = ({ navigation }) => {
       Alert.alert('Error', 'Please select both your current location and a destination.');
       return;
     }
-    console.log('Navigating to NextScreen with:', { location: currentLocation, destination, route });
     navigation.navigate('NextScreen', { location: currentLocation, destination, route });
   };
 
@@ -121,5 +119,3 @@ const styles = StyleSheet.create({
 });
 
 export default ChooseLocation;
-
-

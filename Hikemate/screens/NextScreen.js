@@ -1,76 +1,245 @@
+// import React, { useEffect, useState } from 'react';
+// import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+// import { Ionicons } from '@expo/vector-icons';
+// import MapViewDirections from 'react-native-maps-directions';
+
+// const NextScreen = ({ route, navigation }) => {
+//   const { location, destination } = route.params || {};
+//   const [distance, setDistance] = useState(0);
+//   const [speed, setSpeed] = useState(0);
+//   const [maxAlt, setMaxAlt] = useState(0);
+//   const [minAlt, setMinAlt] = useState(0);
+//   const [currentAlt, setCurrentAlt] = useState(0);
+//   const [time, setTime] = useState('00:00:00');
+
+//   const GOOGLE_MAP_KEY = 'AIzaSyCPqK2X4gXqrqJb_1H3Xg_VB_8gQp2sZoc';
+
+//   useEffect(() => {
+//     if (location && destination) {
+//       const getDirections = async () => {
+//         try {
+//           const response = await fetch(
+//             `https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude},${location.longitude}&destination=${destination.latitude},${destination.longitude}&key=${GOOGLE_MAP_KEY}`
+//           );
+//           const data = await response.json();
+//           if (data.routes.length) {
+//             const distanceInMeters = data.routes[0].legs[0].distance.value;
+//             setDistance(distanceInMeters / 1000); // Convert to kilometers
+
+//             const durationInSeconds = data.routes[0].legs[0].duration.value;
+//             const hours = Math.floor(durationInSeconds / 3600);
+//             const minutes = Math.floor((durationInSeconds % 3600) / 60);
+//             const seconds = durationInSeconds % 60;
+//             setTime(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+
+//             const avgSpeed = (distanceInMeters / durationInSeconds) * 3.6; // Convert to km/h
+//             setSpeed(avgSpeed.toFixed(1));
+//           } else {
+//             console.error('No routes found');
+//           }
+//         } catch (error) {
+//           console.error('Error fetching directions:', error);
+//         }
+//       };
+
+//       getDirections();
+//     }
+//   }, [location, destination]);
+
+//   useEffect(() => {
+//     if (location) {
+//       setCurrentAlt(location.altitude || 0);
+//     }
+//   }, [location]);
+
+//   useEffect(() => {
+//     if (location && destination) {
+//       const altitudes = [location.altitude || 0, destination.altitude || 0];
+//       setMaxAlt(Math.max(...altitudes));
+//       setMinAlt(Math.min(...altitudes));
+//     }
+//   }, [location, destination]);
+
+//   return (
+//     <View style={styles.container}>
+//       <View style={styles.header}>
+//         <Text style={styles.headerText}>Duration</Text>
+//         <Text style={styles.headerTime}>{time}</Text>
+//       </View>
+//       <View style={styles.statsContainer}>
+//         <View style={styles.statBox}>
+//           <Text style={styles.statValue}>{distance.toFixed(1)}km</Text>
+//           <Text style={styles.statLabel}>Distance</Text>
+//         </View>
+//         <View style={styles.statBox}>
+//           <Text style={styles.statValue}>{speed}km/h</Text>
+//           <Text style={styles.statLabel}>Speed</Text>
+//         </View>
+//         <View style={styles.statBox}>
+//           <Text style={styles.statValue}>{maxAlt.toFixed(1)}m</Text>
+//           <Text style={styles.statLabel}>Max. Alt.</Text>
+//         </View>
+//         <View style={styles.statBox}>
+//           <Text style={styles.statValue}>{minAlt.toFixed(1)}m</Text>
+//           <Text style={styles.statLabel}>Min. Alt.</Text>
+//         </View>
+//         <View style={styles.statBox}>
+//           <Text style={styles.statValue}>{currentAlt.toFixed(1)}m</Text>
+//           <Text style={styles.statLabel}>Altitude</Text>
+//         </View>
+//       </View>
+//       <TouchableOpacity
+//         style={styles.detailsButton}
+//         onPress={() =>
+//           navigation.navigate('LocationDetails', {
+//             location,
+//             destination,
+//             distance,
+//             time,
+//             speed,
+//             maxAlt,
+//             minAlt,
+//             currentAlt,
+//           })
+//         }
+//       >
+//         <Text style={styles.detailsButtonText}>View Details</Text>
+//       </TouchableOpacity>
+//       <View style={styles.mapIconContainer}>
+//         <TouchableOpacity onPress={() => navigation.navigate('ChooseLocation')}>
+//           <Ionicons name="map-outline" size={32} color="#0782F9" />
+//         </TouchableOpacity>
+//       </View>
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     padding: 20,
+//   },
+//   header: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     width: '100%',
+//     paddingVertical: 20,
+//   },
+//   headerText: {
+//     fontSize: 20,
+//     fontWeight: 'bold',
+//   },
+//   headerTime: {
+//     fontSize: 20,
+//     color: '#0782F9',
+//   },
+//   statsContainer: {
+//     flexDirection: 'row',
+//     flexWrap: 'wrap',
+//     justifyContent: 'space-around',
+//     width: '100%',
+//   },
+//   statBox: {
+//     width: '45%',
+//     marginVertical: 10,
+//     alignItems: 'center',
+//     padding: 10,
+//     backgroundColor: '#f8f8f8',
+//     borderRadius: 10,
+//   },
+//   statValue: {
+//     fontSize: 18,
+//     fontWeight: 'bold',
+//   },
+//   statLabel: {
+//     fontSize: 14,
+//     color: '#666',
+//   },
+//   detailsButton: {
+//     backgroundColor: '#429590',
+//     padding: 15,
+//     borderRadius: 10,
+//     alignItems: 'center',
+//     marginTop: 20,
+//   },
+//   detailsButtonText: {
+//     color: 'white',
+//     fontSize: 18,
+//     fontWeight: 'bold',
+//   },
+//   mapIconContainer: {
+//     position: 'absolute',
+//     bottom: 20,
+//     right: 20,
+//   },
+// });
+
+// export default NextScreen;
+
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as geolib from 'geolib';
+import MapViewDirections from 'react-native-maps-directions';
 
 const NextScreen = ({ route, navigation }) => {
-  const { location = {}, destination = {}, route: routeCoords = [] } = route.params || {};
+  const { location, destination } = route.params || {};
   const [distance, setDistance] = useState(0);
   const [speed, setSpeed] = useState(0);
-  const [eta, setEta] = useState('');
   const [maxAlt, setMaxAlt] = useState(0);
   const [minAlt, setMinAlt] = useState(0);
   const [currentAlt, setCurrentAlt] = useState(0);
   const [time, setTime] = useState('00:00:00');
 
+  const GOOGLE_MAP_KEY = 'AIzaSyCPqK2X4gXqrqJb_1H3Xg_VB_8gQp2sZoc';
+
   useEffect(() => {
-    console.log('Received routeCoords:', routeCoords);
+    if (location && destination) {
+      const getDirections = async () => {
+        try {
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude},${location.longitude}&destination=${destination.latitude},${destination.longitude}&key=${GOOGLE_MAP_KEY}`
+          );
+          const data = await response.json();
+          if (data.routes.length) {
+            const distanceInMeters = data.routes[0].legs[0].distance.value;
+            setDistance(distanceInMeters / 1000); // Convert to kilometers
 
-    if (routeCoords.length > 1) {
-      // Calculate total distance of the route
-      const totalDistance = geolib.getPathLength(routeCoords);
-      setDistance(totalDistance / 1000); // Convert to kilometers
+            const durationInSeconds = data.routes[0].legs[0].duration.value;
+            const hours = Math.floor(durationInSeconds / 3600);
+            const minutes = Math.floor((durationInSeconds % 3600) / 60);
+            const seconds = durationInSeconds % 60;
+            setTime(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
 
-      // Calculate altitudes
-      const altitudes = routeCoords.map(coord => coord.altitude);
-      setMaxAlt(Math.max(...altitudes));
-      setMinAlt(Math.min(...altitudes));
-      setCurrentAlt(location.altitude || 0);
+            const avgSpeed = (distanceInMeters / durationInSeconds) * 3.6; // Convert to km/h
+            setSpeed(avgSpeed.toFixed(1));
+          } else {
+            console.error('No routes found');
+          }
+        } catch (error) {
+          console.error('Error fetching directions:', error);
+        }
+      };
 
-      // Assuming average speed in m/s (example calculation)
-      const timeInSeconds = (routeCoords.length * 2); // Example calculation
-      const avgSpeed = totalDistance / timeInSeconds;
-      setSpeed((avgSpeed * 3.6).toFixed(1)); // Convert to km/h
+      getDirections();
+    }
+  }, [location, destination]);
 
-      // Calculate ETA (assuming constant speed)
-      const estimatedTime = (totalDistance / avgSpeed) / 60; // in minutes
-      const etaHours = Math.floor(estimatedTime / 60);
-      const etaMinutes = Math.floor(estimatedTime % 60);
-      setEta(`${etaHours}h${etaMinutes.toString().padStart(2, '0')}`);
-
-      // Calculate the total time taken for the route
-      const totalTimeInSeconds = timeInSeconds; // Example calculation
-      const hours = Math.floor(totalTimeInSeconds / 3600);
-      const minutes = Math.floor((totalTimeInSeconds % 3600) / 60);
-      const seconds = totalTimeInSeconds % 60;
-      setTime(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
-    } else if (location.latitude && destination.latitude) {
-      // Calculate direct distance between current location and destination
-      const directDistance = geolib.getDistance(
-        { latitude: location.latitude, longitude: location.longitude },
-        { latitude: destination.latitude, longitude: destination.longitude }
-      );
-      setDistance(directDistance / 1000); // Convert to kilometers
-
-      // For simplicity, assume a constant speed of 5 km/h (example)
-      const avgSpeed = 5;
-      setSpeed(avgSpeed.toFixed(1)); // in km/h
-
-      // Calculate ETA based on direct distance
-      const estimatedTime = (directDistance / 1000) / avgSpeed * 60; // in minutes
-      const etaHours = Math.floor(estimatedTime / 60);
-      const etaMinutes = Math.floor(estimatedTime % 60);
-      setEta(`${etaHours}h${etaMinutes.toString().padStart(2, '0')}`);
-
-      // For the total time, assume the user has just started (time is 0)
-      setTime('00:00:00');
-
-      // Altitude data might not be available, set to default or average
-      setMaxAlt(location.altitude || 0);
-      setMinAlt(location.altitude || 0);
+  useEffect(() => {
+    if (location) {
       setCurrentAlt(location.altitude || 0);
     }
-  }, [routeCoords, location, destination]);
+  }, [location]);
+
+  useEffect(() => {
+    if (location && destination) {
+      const altitudes = [location.altitude || 0, destination.altitude || 0];
+      setMaxAlt(Math.max(...altitudes));
+      setMinAlt(Math.min(...altitudes));
+    }
+  }, [location, destination]);
 
   return (
     <View style={styles.container}>
@@ -85,11 +254,7 @@ const NextScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statValue}>{speed}km/h</Text>
-          <Text style={styles.statLabel}>Vitesse</Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statValue}>{eta}</Text>
-          <Text style={styles.statLabel}>ETA</Text>
+          <Text style={styles.statLabel}>Speed</Text>
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statValue}>{maxAlt.toFixed(1)}m</Text>
@@ -104,8 +269,26 @@ const NextScreen = ({ route, navigation }) => {
           <Text style={styles.statLabel}>Altitude</Text>
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.detailsButton}
+        onPress={() =>
+          navigation.navigate('LocationDetails', {
+            location,
+            destination,
+            distance,
+            time,
+            speed,
+            maxAlt,
+            minAlt,
+            currentAlt,
+            placeId: destination.placeId,
+          })
+        }
+      >
+        <Text style={styles.detailsButtonText}>View Details</Text>
+      </TouchableOpacity>
       <View style={styles.mapIconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Map')}>
+        <TouchableOpacity onPress={() => navigation.navigate('ChooseLocation')}>
           <Ionicons name="map-outline" size={32} color="#0782F9" />
         </TouchableOpacity>
       </View>
@@ -155,6 +338,18 @@ const styles = StyleSheet.create({
   statLabel: {
     fontSize: 14,
     color: '#666',
+  },
+  detailsButton: {
+    backgroundColor: '#429590',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  detailsButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   mapIconContainer: {
     position: 'absolute',

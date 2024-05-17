@@ -7,19 +7,13 @@ import * as Location from 'expo-location';
 
 const Mapscreen = () => {
   const [state, setState] = useState({
-    coordinates: [
-      {
-        latitude: 32.246136,
-        longitude: -7.950090,
-      }
-    ],
+    currentCoordinate: { latitude: 32.246136, longitude: -7.950090 },
     city: '',
     latitude: 32.246136,
     longitude: -7.950090,
     altitude: 0,
   });
   const mapRef = useRef(null);
-  const [route, setRoute] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -35,14 +29,13 @@ const Mapscreen = () => {
         distanceInterval: 5,
       }, async (location) => {
         const { latitude, longitude, altitude } = location.coords;
-        setRoute(prevRoute => [...prevRoute, { latitude, longitude, altitude }]);
 
         // Reverse geocode to get the city name
         let reverseGeocode = await Location.reverseGeocodeAsync({ latitude, longitude });
         let city = reverseGeocode[0]?.city || '';
 
         setState({
-          coordinates: [...state.coordinates, { latitude, longitude }],
+          currentCoordinate: { latitude, longitude },
           city,
           latitude,
           longitude,
@@ -56,10 +49,10 @@ const Mapscreen = () => {
 
   const handleLongPress = (event) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
-    setState({
-      ...state,
-      coordinates: [...state.coordinates, { latitude, longitude }]
-    });
+    setState((prevState) => ({
+      ...prevState,
+      currentCoordinate: { latitude, longitude }
+    }));
   };
 
   return (
@@ -77,9 +70,7 @@ const Mapscreen = () => {
         onLongPress={handleLongPress}
         showsUserLocation={true}
       >
-        {state.coordinates.map((coord, index) => (
-          <Marker key={index} coordinate={coord} />
-        ))}
+        <Marker coordinate={state.currentCoordinate} />
       </MapView>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>Current Location: {state.city}</Text>
@@ -88,6 +79,9 @@ const Mapscreen = () => {
         <Text style={styles.infoText}>Altitude: {state.altitude.toFixed(1)}m</Text>
       </View>
       <View style={styles.bottomBar}>
+        {/* <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back-outline" size={32} color="#0782F9" />
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('UserProfileScreen')}>
           <Ionicons name="person-circle-outline" size={32} color="#0782F9" />
         </TouchableOpacity>
