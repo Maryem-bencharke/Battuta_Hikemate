@@ -13,6 +13,8 @@
 //     const [emailError, setEmailError] = useState("");
 //     const [passwordError, setPasswordError] = useState("");
 
+//     const navigation = useNavigation();
+
 //     const togglePasswordVisibility = () => {
 //         setPasswordVisible(!passwordVisible);
 //     };
@@ -58,6 +60,7 @@
 //             }
 //         }
 //     };
+
 //     const handleForgotPassword = () => {
 //         if (!validator.isEmail(email)) {
 //             alert("Please enter a valid email address to reset password.");
@@ -72,7 +75,6 @@
 //                 alert("Failed to send password reset email: " + error.message);
 //             });
 //     };
-//     const navigation = useNavigation();
 
 //     return (
 //         <KeyboardAvoidingView style={styles.container} behavior='padding'>
@@ -239,14 +241,13 @@
 //     },
 // });
 
-
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import React, { useState, useCallback } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View, Image, Alert } from 'react-native';
 import HMInput from './HMInput'; 
 import validator from 'validator';
 import { auth } from '../firebase'; 
-import { signInWithEmailAndPassword , sendPasswordResetEmail} from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
 const Loginscreen = () => {
     const [email, setEmail] = useState('');
@@ -260,6 +261,16 @@ const Loginscreen = () => {
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
+
+    useFocusEffect(
+        useCallback(() => {
+            // Reset email and password fields when the screen is focused
+            setEmail('');
+            setPassword('');
+            setEmailError('');
+            setPasswordError('');
+        }, [])
+    );
 
     const handleSubmit = async () => {
         setEmailError("");

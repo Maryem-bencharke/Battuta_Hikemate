@@ -79,16 +79,13 @@ const Mapscreen = () => {
         <Text style={styles.infoText}>Altitude: {state.altitude.toFixed(1)}m</Text>
       </View>
       <View style={styles.bottomBar}>
-        {/* <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back-outline" size={32} color="#0782F9" />
-        </TouchableOpacity> */}
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('UserProfileScreen')}>
           <Ionicons name="person-circle-outline" size={32} color="#0782F9" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ChooseLocation')}>
           <Ionicons name="map-outline" size={32} color="#0782F9" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('NextScreen')}>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('TracksScreen')}>
           <Ionicons name="calendar-outline" size={32} color="#0782F9" />
         </TouchableOpacity>
       </View>

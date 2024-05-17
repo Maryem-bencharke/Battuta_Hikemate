@@ -1,10 +1,11 @@
-// TrackDetails.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 
-const TrackDetails = ({ route, navigation }) => {
+const TrackDetails = ({ route }) => {
   const { track } = route.params;
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -24,6 +25,13 @@ const TrackDetails = ({ route, navigation }) => {
         />
       </MapView>
       <View style={styles.detailsContainer}>
+        {track.imageUrl ? (
+          <Image source={{ uri: track.imageUrl }} style={styles.image} />
+        ) : (
+          <View style={styles.placeholderImage}>
+            <Text style={styles.placeholderText}>No Image Available</Text>
+          </View>
+        )}
         <Text style={styles.title}>{track.trackName}</Text>
         <Text style={styles.detail}>Distance: {track.distance.toFixed(1)} km</Text>
         <Text style={styles.detail}>Time: {track.time}</Text>
@@ -31,7 +39,7 @@ const TrackDetails = ({ route, navigation }) => {
         <Text style={styles.detail}>Min Altitude: {track.minAlt} m</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('ChooseLocation', { coordinates: track.coordinates })}
+          onPress={() => navigation.navigate('FollowTrack', { track })}
         >
           <Text style={styles.buttonText}>Follow this Track</Text>
         </TouchableOpacity>
@@ -50,6 +58,23 @@ const styles = StyleSheet.create({
   detailsContainer: {
     padding: 20,
     backgroundColor: '#fff',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    marginBottom: 20,
+  },
+  placeholderImage: {
+    width: '100%',
+    height: 200,
+    backgroundColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  placeholderText: {
+    fontSize: 18,
+    color: '#666',
   },
   title: {
     fontSize: 24,
@@ -74,3 +99,5 @@ const styles = StyleSheet.create({
 });
 
 export default TrackDetails;
+
+

@@ -81,7 +81,7 @@ const SignUpscreen = () => {
           setEmail('');
           setPhoneNumber('');
           setPassword('');
-          navigation.navigate('Home'); // Navigate to Home after signup
+          navigation.navigate('Login'); 
         }
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
