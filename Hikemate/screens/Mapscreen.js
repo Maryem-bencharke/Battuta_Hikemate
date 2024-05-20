@@ -85,8 +85,8 @@ const Mapscreen = () => {
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ChooseLocation')}>
           <Ionicons name="map-outline" size={32} color="#0782F9" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('TracksScreen')}>
-          <Ionicons name="calendar-outline" size={32} color="#0782F9" />
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('TrackSelectionScreen')}>
+          <Ionicons name="walk-outline" size={32} color="#0782F9" />
         </TouchableOpacity>
       </View>
     </View>
@@ -130,4 +130,5 @@ const styles = StyleSheet.create({
 });
 
 export default Mapscreen;
+
 
