@@ -46,27 +46,28 @@ const Loginscreen = () => {
             console.log('Logged in:', userCredential.user);
             navigation.navigate('Map'); 
         } catch (error) {
-            console.error('Login error:', error);
+            let alertMessage = "Login error: ";
             switch (error.code) {
                 case 'auth/wrong-password':
-                    alert("Wrong password. Please try again.");
+                    alertMessage += "Wrong password. Please try again.";
                     break;
                 case 'auth/user-not-found':
-                    alert("No user found with this email address.");
+                    alertMessage += "No user found with this email address.";
                     break;
                 case 'auth/invalid-email':
-                    alert("The email address is not valid.");
+                    alertMessage += "The email address is not valid.";
                     break;
                 case 'auth/user-disabled':
-                    alert("This user has been disabled.");
+                    alertMessage += "This user has been disabled.";
                     break;
                 case 'auth/invalid-credential':
-                    alert("Invalid credentials. Please check your email and password.");
+                    alertMessage += "Invalid credentials. Please check your email and password.";
                     break;
                 default:
-                    alert("Login error: " + error.message);
+                    alertMessage += error.message;
                     break;
             }
+            Alert.alert("Login Error", alertMessage);
         }
     };
 
@@ -111,9 +112,9 @@ const Loginscreen = () => {
                 />
                 {passwordError.length > 0 && <Text style={styles.errorTextStyle}>{passwordError}</Text>}
                 <View style={styles.forgotPasswordContainer}>
-                <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPasswordContainer}>
-                    <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPasswordContainer}>
+                        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                     <Text style={styles.buttonTitle}>Login</Text>

@@ -12,7 +12,7 @@ const SignUpscreen = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('MA'); // Default country code
+  const [countryCode, setCountryCode] = useState('MA'); 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -73,10 +73,9 @@ const SignUpscreen = () => {
             username: username,
             email: email,
             phoneNumber: phoneNumber,
-            profilePicture: '' // Placeholder for profile picture if needed
+            profilePicture: '' 
           });
           alert('User account created & signed in!');
-          // Reset form
           setUsername('');
           setEmail('');
           setPhoneNumber('');
@@ -214,3 +213,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
+
+

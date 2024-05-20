@@ -55,26 +55,35 @@ const TracksScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8f9fa',
+    padding: 10,
   },
   trackItem: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 3,
   },
   trackName: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#343a40',
+    marginBottom: 5,
   },
   trackDetails: {
     fontSize: 14,
-    color: '#666',
+    color: '#6c757d',
+    marginBottom: 5,
   },
   trackUser: {
     fontSize: 14,
-    color: '#666',
+    color: '#6c757d',
   },
 });
 
 export default TracksScreen;
-

@@ -8,7 +8,7 @@ const EditTrackScreen = ({ route, navigation }) => {
   const [trackName, setTrackName] = useState(track.trackName);
   const [distance, setDistance] = useState(track.distance.toString());
   const [time, setTime] = useState(track.time);
-  const [description, setDescription] = useState(track.description); // New state for description
+  const [description, setDescription] = useState(track.description); 
 
   useEffect(() => {
     console.log('Track data:', track);
@@ -20,7 +20,7 @@ const EditTrackScreen = ({ route, navigation }) => {
         trackName,
         distance: parseFloat(distance),
         time,
-        description, // Include description in the update
+        description, 
       });
       Alert.alert('Success', 'Track updated successfully');
       navigation.goBack();

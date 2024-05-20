@@ -33,20 +33,10 @@ export const TrackProvider = ({ children }) => {
     }
   };
 
-//   const updateTrack = async (trackId, updatedData) => {
-//     try {
-//       const trackRef = doc(firestore, 'tracks', trackId);
-//       await updateDoc(trackRef, updatedData);
-//       fetchTracks(); // Refresh the tracks list
-//     } catch (error) {
-//       console.error('Error updating track:', error);
-//     }
-//   };
     const updateTrack = async (trackId, updatedTrackData) => {
     try {
       const trackRef = doc(firestore, 'tracks', trackId);
       await updateDoc(trackRef, updatedTrackData);
-      // Optionally update local state if you're maintaining a local cache of tracks
       setTracks(tracks.map(track => track.id === trackId ? { ...track, ...updatedTrackData } : track));
     } catch (error) {
       console.error('Error updating track:', error);
@@ -59,10 +49,10 @@ export const TrackProvider = ({ children }) => {
       if (user) {
         await addDoc(collection(firestore, 'tracks'), {
           ...trackData,
-          userId: user.uid, // Ensure the userId is set correctly
+          userId: user.uid, 
           createdAt: new Date()
         });
-        fetchTracks(); // Refresh the tracks list
+        fetchTracks(); 
       }
     } catch (error) {
       console.error('Error saving track:', error);

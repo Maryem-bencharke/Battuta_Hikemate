@@ -78,28 +78,11 @@ const NextScreen = ({ route, navigation }) => {
           <Text style={styles.statValue}>{maxAlt.toFixed(1)}m</Text>
           <Text style={styles.statLabel}>Max. Alt.</Text>
         </View>
-        {/* <View style={styles.statBox}>
-          <Text style={styles.statValue}>{minAlt.toFixed(1)}m</Text>
-          <Text style={styles.statLabel}>Min. Alt.</Text>
-        </View> */}
         <View style={styles.statBox}>
           <Text style={styles.statValue}>{currentAlt.toFixed(1)}m</Text>
           <Text style={styles.statLabel}>Altitude</Text>
         </View>
       </View>
-      {/* <TouchableOpacity
-        style={styles.detailsButton}
-        onPress={() =>
-          navigation.navigate('TrackDetails', {
-            track: {
-              ...track,
-              imageUrl: track.imageUrl, 
-            },
-          })
-        }
-      >
-        <Text style={styles.detailsButtonText}>View Details</Text>
-      </TouchableOpacity> */}
       <View style={styles.mapIconContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('Map')}>
           <Ionicons name="map-outline" size={32} color="#0782F9" />
